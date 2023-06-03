@@ -11,29 +11,27 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+# Simple Google News Scraper
+This is just a simple http and html package wraper for scraping https://news.google.com/
 
-## Features
+# How To Install
+TBA!
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
+# Example Usage
 ```dart
-const like = 'sample';
+import 'package:gnews/gnews.dart';
+
+void main() async {
+  var service = GNewsScrap();
+  var headlines = await service.getHeadlines();
+
+  if(headlines != null) {
+    headlines.forEach((headline){
+      print(headline?['title']);
+      print(headline?['article_path']);
+      print(headline?['thumbnail_url']);
+      print(headline?['publish_at'] + '\n');
+    });
+  }
+}
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
