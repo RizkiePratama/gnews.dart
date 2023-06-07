@@ -1,15 +1,35 @@
 import 'package:gnews/gnews.dart';
 
-void main() async {
+Future<Map<String, dynamic>?> exampleHeadline() async {
   var service = GNewsScrap();
   var headlines = await service.getHeadlines();
+  var headline = headlines[0];
 
-  if(headlines != null) {
-    headlines.forEach((t){
-      print(t?['title']);
-      print(t?['article_path']);
-      print(t?['thumbnail_url']);
-      print(t?['publish_at'] + '\n');
-    });
+  print("getHeadlines()\n---------------------");
+  if(headline != null) {
+    for (MapEntry entry in headline.entries) {
+      print(entry.key.toString() +': ' + entry.value.toString());
+    }
+    print('\n');
+  };
+
+  return headline;
+}
+
+void exampleGetPost(String path) async {
+  var service = GNewsScrap();
+  var post = await service.getNewsPost(path);
+
+  print("getNewsPost()\n---------------------");
+  if (post != null) {
+    for (MapEntry entry in post.entries) {
+      print(entry.key.toString() +': ' + entry.value.toString());
+    }
+    print('\n');
   }
+}
+
+void main() async {
+  var sample = await exampleHeadline();
+  exampleGetPost(sample?['article_path']);
 }

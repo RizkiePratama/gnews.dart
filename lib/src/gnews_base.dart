@@ -5,6 +5,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
 
+import 'package:gnews/parser.dart';
 
 class GNewsScrap {
   static String googleNewsURI = 'https://news.google.com';
@@ -43,6 +44,22 @@ class GNewsScrap {
     });
 
     return _fetchedNews;
+  }
+
+  Future<Map<String, dynamic>?> getNewsPost(String newsPath) async {
+    var newsPageElement =  await _getElementFromPage(newsPath, 'a[rel="nofollow"]');
+    var newsPageURL = newsPageElement[0].text;
+
+    var parser = ParserAdapter.getParserFor(newsPageURL);
+
+    if(parser != null) {
+      return await parser.getResponse();
+    }
+
+    return {
+      'is_redirect': true,
+      'url': newsPageURL
+    };
   }
 
   Future<List<Element>> _getElementFromPage(String page_path, String query) async {
