@@ -40,7 +40,9 @@ class GNewsScrap {
         }
       });
 
-      _fetchedNews.add(composed);
+      if(composed['thumbnail_url'] != null) {
+        _fetchedNews.add(composed);
+      }
     });
 
     return _fetchedNews;
