@@ -12,7 +12,6 @@ class Aljazeera extends Parser {
             'source': 'Al-Jazeera',
             'title': content.querySelector('.article-header h1').text,
             'subtitle': content.querySelector('.article__subhead em').text,
-            'author': content.querySelector('.article-author-name-item').text,
             'content': content.querySelector('.wysiwyg').innerHtml
         };
     }
