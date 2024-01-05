@@ -21,17 +21,19 @@ class GNewsScrap {
       news.nodes.forEach((node) {
         switch (node.toString()) {
           case '<html div>':
-            if(node.attributes['class'] == 'XlKvRb') {
+            if (node.attributes['class'] == 'XlKvRb') {
               composed['article_path'] = node.nodes[0].attributes['href']?.substring(1);
-            };
+            }
 
-            if(node.attributes['class'] == 'UOVeFe ') {
+            if (node.attributes['class'] == 'UOVeFe ') {
               composed['publish_at'] = node.nodes[0].attributes['datetime'];
             }
             break;
 
-          case '<html h4>':
-            composed['title'] = node.text;
+          case '<html a>':
+            if (node.attributes['class'] == 'gPFEn') {
+              composed['title'] = node.text;
+            }
             break;
 
           case '<html figure>':
@@ -40,7 +42,7 @@ class GNewsScrap {
         }
       });
 
-      if(composed['thumbnail_url'] != null) {
+      if (composed['thumbnail_url'] != null) {
         _fetchedNews.add(composed);
       }
     });
@@ -49,19 +51,16 @@ class GNewsScrap {
   }
 
   Future<Map<String, dynamic>?> getNewsPost(String newsPath) async {
-    var newsPageElement =  await _getElementFromPage(newsPath, 'a[rel="nofollow"]');
+    var newsPageElement = await _getElementFromPage(newsPath, 'a[rel="nofollow"]');
     var newsPageURL = newsPageElement[0].text;
 
     var parser = ParserAdapter.getParserFor(newsPageURL);
 
-    if(parser != null) {
+    if (parser != null) {
       return await parser.getResponse();
     }
 
-    return {
-      'is_redirect': true,
-      'url': newsPageURL
-    };
+    return {'is_redirect': true, 'url': newsPageURL};
   }
 
   Future<List<Element>> _getElementFromPage(String page_path, String query) async {
