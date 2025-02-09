@@ -51,17 +51,10 @@ class GNewsScrap {
     return _fetchedNews;
   }
 
-  Future<Map<String, dynamic>?> getNewsPost(String newsPath) async {
-    var newsPageElement = await _getElementFromPage(newsPath, 'a[rel="nofollow"]');
-    var newsPageURL = newsPageElement[0].text;
+  Future<Map<String, dynamic>> getNewsPost(String newsPath) async {
+    var request_url = Uri.parse(googleNewsURI + newsPath);
 
-    var parser = ParserAdapter.getParserFor(newsPageURL);
-
-    if (parser != null) {
-      return await parser.getResponse();
-    }
-
-    return {'is_redirect': true, 'url': newsPageURL};
+    return {'is_redirect': false, 'url': request_url.toString()};
   }
 
   Future<List<Element>> _getElementFromPage(String page_path, String query) async {
